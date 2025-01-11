@@ -96,6 +96,8 @@ def predict_sentiment(text):
     # Tokenize and pad the text
     model, tokenizer = load_artifacts()
     sequences = tokenizer.texts_to_sequences([text])
+    vocab_size = tokenizer.num_words if tokenizer.num_words else len(tokenizer.word_index) + 1
+    sequences = [[min(token, vocab_size - 1) for token in seq] for seq in sequences]
     padded_sequences = pad_sequences(sequences, maxlen=100)
     
     # Make prediction
