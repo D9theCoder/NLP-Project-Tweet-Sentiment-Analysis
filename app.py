@@ -121,6 +121,8 @@ def main():
     if st.button("Predict Sentiment"):
         if tweet_text.strip() == "":
             st.warning("Please enter some text!")
+        elif len(tweet_text.strip().split()) < 5:
+            st.warning("Please enter at least 5 words for better analysis!")
         else:
             with st.spinner("Analyzing..."):
                 sentiment, confidence = predict_sentiment(tweet_text)
