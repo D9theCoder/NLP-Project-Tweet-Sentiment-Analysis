@@ -97,6 +97,12 @@ def predict_sentiment(text):
     model, tokenizer = load_artifacts()
     sequences = tokenizer.texts_to_sequences([text])
     vocab_size = tokenizer.num_words if tokenizer.num_words else len(tokenizer.word_index) + 1
+    # Debug check for large tokens
+    for seq in sequences:
+        for t in seq:
+            if t >= vocab_size:
+                print(f"Token index {t} exceeds vocab_size {vocab_size}")
+    # Clamp them
     sequences = [[min(token, vocab_size - 1) for token in seq] for seq in sequences]
     padded_sequences = pad_sequences(sequences, maxlen=100)
     
