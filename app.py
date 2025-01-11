@@ -2,11 +2,12 @@ import streamlit as st
 import re
 import pickle
 import numpy as np
-from tensorflow.keras.models import load_model # type: ignore
-from tensorflow.keras.preprocessing.sequence import pad_sequences # type: ignore
+from keras import models  # Update import
+from keras.preprocessing.sequence import pad_sequences  # Update import
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 import nltk
+import os
 
 # Download required NLTK data
 try:
@@ -24,10 +25,23 @@ all_stopwords = [w for w in all_stopwords if w not in ['no', 'not']]
 # Load the model and tokenizer
 @st.cache_resource
 def load_artifacts():
-    model = load_model('model.keras')
-    
-    with open('tokenizer.pkl', 'rb') as file:
-        tokenizer = pickle.load(file)
+    try:
+        # Load model with custom_objects
+        model = models.load_model('model.keras', compile=False)
+        model.compile(optimizer='adam',
+                     loss='categorical_crossentropy',
+                     metrics=['accuracy'])
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}")
+        raise e
+
+    try:
+        with open('tokenizer.pkl', 'rb') as file:
+            tokenizer = pickle.load(file)
+    except Exception as e:
+        st.error(f"Error loading tokenizer: {str(e)}")
+        raise e
+        
     return model, tokenizer
 
 def preprocessing(tweet):
