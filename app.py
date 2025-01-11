@@ -24,7 +24,7 @@ all_stopwords = [w for w in all_stopwords if w not in ['no', 'not']]
 # Load the model and tokenizer
 @st.cache_resource
 def load_artifacts():
-    model = load_model('model/')
+    model = load_model('model.keras')
     
     with open('tokenizer.pkl', 'rb') as file:
         tokenizer = pickle.load(file)
