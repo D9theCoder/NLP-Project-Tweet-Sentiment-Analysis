@@ -8,6 +8,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 import nltk
 import os
+from keras.layers import Embedding, LSTM, Bidirectional, Dropout, Dense  # Import necessary layers
 
 # Download required NLTK data
 try:
@@ -27,7 +28,14 @@ all_stopwords = [w for w in all_stopwords if w not in ['no', 'not']]
 def load_artifacts():
     try:
         # Load model with custom_objects
-        model = models.load_model('model.keras', compile=False)
+        custom_objects = {
+            'Embedding': Embedding,
+            'LSTM': LSTM,
+            'Bidirectional': Bidirectional,
+            'Dropout': Dropout,
+            'Dense': Dense
+        }
+        model = models.load_model('model.keras', custom_objects=custom_objects, compile=False)
         model.compile(optimizer='adam',
                      loss='categorical_crossentropy',
                      metrics=['accuracy'])
