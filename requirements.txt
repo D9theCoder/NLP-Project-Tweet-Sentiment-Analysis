@@ -4,4 +4,3 @@ tensorflow
 numpy == 1.26.4
 nltk == 3.9.1
 seaborn == 0.13.2
-python == 3.9.19
