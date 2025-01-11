@@ -1,6 +1,6 @@
 streamlit
 pandas == 2.2.2
-tensorflow == 2.16.0
+tensorflow
 numpy == 1.26.4
 nltk == 3.9.1
 seaborn == 0.13.2
